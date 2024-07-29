@@ -148,7 +148,7 @@ export default class DiscordPresence implements IIntegration {
           },
           assets: {
             large_image: thumbnail && thumbnail.length <= 256 ? thumbnail : "ytmd-logo",
-            large_text: stringLimit(state.videoDetails.title, 128, 2),
+            large_text: state.videoDetails.album ? stringLimit(state.videoDetails.album, 128, 2) : undefined,
             small_image: getSmallImageKey(state.trackState),
             small_text: getSmallImageText(state.trackState)
           },
