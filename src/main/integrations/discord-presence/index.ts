@@ -95,6 +95,7 @@ export default class DiscordPresence implements IIntegration {
   private lastVideoDetailsAuthor: string | null = null;
   private lastVideoDetailsId: string | null = null;
   private lastTrackState: VideoState | null = null;
+  private lastVideoDetailsAlbum: string | null = null;
 
   private connectionRetries: number = 0;
 
@@ -128,13 +129,15 @@ export default class DiscordPresence implements IIntegration {
         state.videoDetails.title !== this.lastVideoDetailsTitle ||
         state.videoDetails.author !== this.lastVideoDetailsAuthor ||
         state.videoDetails.id !== this.lastVideoDetailsId ||
-        state.trackState !== this.lastTrackState
+        state.trackState !== this.lastTrackState ||
+        state.videoDetails.album !== this.lastVideoDetailsAlbum
       ) {
         this.lastEndTimestamp = this.endTimestamp;
         this.lastVideoDetailsTitle = state.videoDetails.title;
         this.lastVideoDetailsAuthor = state.videoDetails.author;
         this.lastVideoDetailsId = state.videoDetails.id;
         this.lastTrackState = state.trackState;
+        this.lastVideoDetailsAlbum = state.videoDetails.album;
 
         const thumbnail = getHighestResThumbnail(state.videoDetails.thumbnails);
         this.discordClient.setActivity({
@@ -142,13 +145,13 @@ export default class DiscordPresence implements IIntegration {
           // We'll still send a type in case Discord at some point updates to allow this
           type: DiscordActivityType.Listening,
           details: stringLimit(state.videoDetails.title, 128, 2),
-          state: stringLimit(state.videoDetails.author, 128, 2),
+          state: "by ".concat(stringLimit(state.videoDetails.author, 125, 2)),
           timestamps: {
             end: state.trackState === VideoState.Playing ? this.endTimestamp : undefined
           },
           assets: {
             large_image: thumbnail && thumbnail.length <= 256 ? thumbnail : "ytmd-logo",
-            large_text: state.videoDetails.album ? stringLimit(state.videoDetails.album, 128, 2) : undefined,
+            large_text: state.videoDetails.album ? `on ${stringLimit(state.videoDetails.album, 125, 2)}` : undefined,
             small_image: getSmallImageKey(state.trackState),
             small_text: getSmallImageText(state.trackState)
           },
