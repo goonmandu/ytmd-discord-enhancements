@@ -145,7 +145,7 @@ export default class DiscordPresence implements IIntegration {
           // We'll still send a type in case Discord at some point updates to allow this
           type: DiscordActivityType.Listening,
           details: stringLimit(state.videoDetails.title, 128, 2),
-          state: "by ".concat(stringLimit(state.videoDetails.author, 125, 2)),
+          state: `by ${stringLimit(state.videoDetails.author, 125, 2)}`,
           timestamps: {
             end: state.trackState === VideoState.Playing ? this.endTimestamp : undefined
           },
