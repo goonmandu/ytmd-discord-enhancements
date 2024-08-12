@@ -49,6 +49,7 @@ const config: ForgeConfig = {
     new MakerSquirrel({
       iconUrl: `https://raw.githubusercontent.com/${process.env.YTMD_UPDATE_FEED_OWNER ?? "ytmdesktop"}/ytmdesktop/137c4e5c175c8c125cbcca9a5312611f80cd3bd9/src/assets/icons/ytmd.ico`
     }),
+
     new MakerZIP({}, ["darwin"]),
     new MakerRpm({
       options: {
@@ -57,6 +58,7 @@ const config: ForgeConfig = {
         icon: "./src/assets/icons/ytmd.png"
       }
     }),
+
     new MakerDeb({
       options: {
         categories: ["AudioVideo", "Audio"],
